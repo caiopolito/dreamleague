@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.SignalR" Version="1.19.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\dreamleague.domain\dreamleague.domain.csproj" />
+    <ProjectReference Include="..\dreamleague.hubs\dreamleague.hubs.csproj" />
+    <ProjectReference Include="..\dreamleague.infrastructure\dreamleague.infrastructure.csproj" />
+    <ProjectReference Include="..\dreamleague.shared\dreamleague.shared.csproj" />
+  </ItemGroup>
+
+</Project>

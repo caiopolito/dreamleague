@@ -1,0 +1,34 @@
+version: "3.3"
+
+volumes:
+  dreamleague-db:
+    name: 'dreamleague-db'
+
+services:
+  database:
+    build:
+      context: ./dreamleague.db/docker
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Password1234!
+      - MSSQL_PID=Developer
+    ports:
+      - 1433:1433
+    volumes:
+      - dreamleague-db:/var/opt/mssql
+
+
+  api:
+    build:
+      context: ./dreamleague.api
+      dockerfile: docker/Dockerfile
+    depends_on:
+      database:
+        condition: service_healthy
+        restart: true
+    ports:
+      - 41010:80
+
+    
