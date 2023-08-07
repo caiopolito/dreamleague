@@ -5,11 +5,14 @@ export const colors = {
     main: '#39074d',
   },
   secondary: {
+    main: '#D3D3D3',
+  },
+  tertiary: {
     main: '#01c8d0',
-    contrastText: '#8B7676',
   },
   text: {
     main: '#cfcfcf',
+    secundary: '#000000cc',
   },
   background: {
     main: '#181b25',
@@ -21,9 +24,13 @@ export const colors = {
     create: '#4caf50',
     enter: '#ffc107',
     invite: '#3f51b5',
+    close: '#f44336',
   },
   login: {
     login: '#3f51b5',
+  },
+  notification: {
+    color: '#ed143dbd',
   },
 }
 
@@ -35,7 +42,7 @@ const textStyle = {
   color: '#595959',
 }
 
-const typography = {
+export const typography = {
   fontFamily: ['Open Sans', 'sans-serif'].join(','),
   h1: textStyle,
   h2: textStyle,
@@ -78,7 +85,7 @@ export const customTheme = () => {
             textTransform: 'none',
           },
           contained: {
-            backgroundImage: 'linear-gradient(to right, #6441A5 0%, #2a0845 51%, #6441A5 100%)',
+            backgroundImage: 'linear-gradient(to right, #40207a 0%, #2a0845 51%, #27144a 100%)',
             backgroundSize: '200% auto',
             transition: '.5s',
             '&:hover': {
@@ -86,6 +93,17 @@ export const customTheme = () => {
               color: '#fff',
               textDecoration: 'none',
             },
+          },
+          outlined: {
+            border: `1px solid ${colors.secondary.main}`,
+            color: colors.secondary.main,
+            transition: '.5s',
+            '&:hover': {
+              border: `1px solid ${colors.secondary.main}`,
+            },
+          },
+          text: {
+            color: colors.secondary.main,
           },
           sizeLarge: {
             padding: '16px 22px',
@@ -108,6 +126,13 @@ export const customTheme = () => {
           },
         },
       },
+      MuiArowBackIcon: {
+        styleOverrides: {
+          root: {
+            color: '#c3c3c3',
+          },
+        },
+      },
       MuiFormLabel: {
         styleOverrides: {
           root: {
@@ -124,6 +149,18 @@ export const customTheme = () => {
         styleOverrides: {
           root: {
             color: colors.text.main,
+          },
+        },
+      },
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            input: {
+              color: '#C3C3C3',
+            },
+            label: {
+              color: '#C3C3C3',
+            },
           },
         },
       },
@@ -166,6 +203,13 @@ export const customTheme = () => {
         styleOverrides: {
           root: {
             width: '100%',
+          },
+        },
+      },
+      MuiSkeleton: {
+        styleOverrides: {
+          root: {
+            backgroundColor: 'rgb(103 58 183 / 11%)',
           },
         },
       },

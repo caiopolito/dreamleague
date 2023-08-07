@@ -19,19 +19,28 @@ export default makeStyles((theme) => ({
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
+
+      [theme.breakpoints.down('lg')]: {
+        flexDirection: 'row',
+
+        '& svg': {
+          marginRight: 16,
+        },
+      },
     },
   },
   navItem: {
     width: '130px !important',
     alignItems: 'center !important',
     justifyContent: 'center !important',
+
     '&.MuiButtonBase-root': {
       borderRadius: 0,
       height: theme.sizes.header,
       '&:after': {
         content: '""',
         position: 'absolute',
-        height: 2,
+        height: 4,
         width: '0%',
         left: 0,
         bottom: 0,
@@ -45,6 +54,11 @@ export default makeStyles((theme) => ({
     },
     '&.MuiButtonBase-root.active': {
       borderBottom: `1px solid ${colors.secondary.main}`,
+    },
+
+    [theme.breakpoints.down('lg')]: {
+      alignItems: 'initial !important',
+      justifyContent: 'initial !important',
     },
   },
   appBar: {
@@ -64,6 +78,10 @@ export default makeStyles((theme) => ({
     height: '50px !important',
     marginTop: '15px !important',
     opacity: '0.3',
+
+    [theme.breakpoints.down('lg')]: {
+      height: '1px !important',
+    },
   },
   dividerSubBar: {
     background: colors.secondary.main,
@@ -100,5 +118,12 @@ export default makeStyles((theme) => ({
     width: '100%',
     height: 30,
     color: '#fff',
+  },
+  menuMobile: {
+    '& .MuiPaper-root': {
+      borderRadius: 0,
+      padding: 16,
+      background: '#181b25',
+    },
   },
 }))

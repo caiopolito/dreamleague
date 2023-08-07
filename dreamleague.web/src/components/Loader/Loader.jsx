@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, CircularProgress } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import PropTypes from 'prop-types'
@@ -50,14 +50,9 @@ const Loader = ({ show }) => {
 }
 
 export const useLoader = () => {
-  const enableLoader = useCallback(
-    () => document.dispatchEvent(new CustomEvent({ type: LOADER_ENABLE })),
-    [],
-  )
-  const disableLoader = useCallback(
-    () => document.dispatchEvent(new CustomEvent({ type: LOADER_DISABLE })),
-    [],
-  )
+  const enableLoader = () => document.dispatchEvent(new CustomEvent(LOADER_ENABLE))
+
+  const disableLoader = () => document.dispatchEvent(new CustomEvent(LOADER_DISABLE))
 
   return {
     enableLoader,

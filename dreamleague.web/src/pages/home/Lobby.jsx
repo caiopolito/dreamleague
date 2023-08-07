@@ -1,21 +1,25 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 import { makeStyles } from '@mui/styles'
 import {
-  Box, Grid, Button, Typography,
+  Box, Grid, Button, Typography, Paper,
 } from '@mui/material'
 import SVG from 'react-inlinesvg'
+import { useHistory } from 'react-router-dom'
 
 import './button.scss'
 import icoCalibur from 'assets/ico-calibur.svg'
-import icoMolotov from 'assets/ico-molotov.svg'
-import icoInvite from 'assets/ico-arrow.svg'
-
 import { colors } from 'theme/index'
+import useSecurity from 'security/useSecurity'
+import Friends from './Friends'
+import QueueModal from './QueueModal'
+
+import { useLobbyContext } from './LobbyContext'
 
 const useStyles = makeStyles(() => ({
   button: {
-    width: 230,
-    height: '160px !important',
+    height: 'auto !important',
+    color: '#fff !important',
   },
   create: {
     border: `1px solid ${colors.lobby.create} !important`,
@@ -26,89 +30,129 @@ const useStyles = makeStyles(() => ({
   invite: {
     border: `1px solid ${colors.lobby.invite} !important`,
   },
+  paper: {
+    minHeight: 300,
+    color: '#fff !important',
+    padding: 16,
+    backgroundColor: '#0705204a !important',
+  },
 }))
 
 const Lobby = () => {
+  const [openQueue, setOpenQueue] = useState(false)
+
+  const [connection, setConnection] = useState(null)
+
+  const { user } = useSecurity()
+
   const classes = useStyles()
   const spanLayout = [0, 1, 2, 3]
+  const history = useHistory()
+  const {
+    queue, setQueue, matchStarted, setMatchStarted, ipAddress, setIpAddress,
+  } = useLobbyContext()
+
+  useEffect(() => {
+    async function openConnection() {
+      const newConnection = new HubConnectionBuilder()
+        .withUrl(`${process.env.REACT_APP_URL_HUB}api/queue`)
+        .configureLogging(LogLevel.Information)
+        .build()
+
+      newConnection.onclose(() => {
+        setConnection()
+      })
+
+      newConnection.on('MatchGoingOn', (ip) => {
+        setIpAddress(ip)
+        setMatchStarted(true)
+        setOpenQueue(true)
+      })
+
+      await newConnection.start()
+      setConnection(newConnection)
+      await newConnection.invoke('OnConnectAsync', user?.steamId)
+    }
+    openConnection()
+  }, [setConnection, setMatchStarted, user, setIpAddress])
 
   return (
-    <Box display="flex" alignItems="center" justifyContent="center" height={1}>
-      <Box>
-        <Grid container spacing={4}>
-          <Grid item xs={4}>
-            <Button variant="outlined" color="secondary" className={`${classes.button} ${classes.create} buttonLobby`}>
-              {spanLayout.map((_, index) => (<span key={index} />))}
-
-              <Box>
-                <Box>
-                  <SVG
-                    width={60}
-                    height={60}
-                    src={icoCalibur}
-                    stroke={colors.lobby.create}
-                  />
-                </Box>
-
-                <Box>
-                  <Typography fontWeight={100} variant="h6">
-                    Criar partida
+    <>
+      <Box display="flex" alignItems="center" justifyContent="center">
+        <Box py={3} width={1}>
+          <Grid container spacing={4} justifyContent="center">
+            <Grid item xs={12} md={4}>
+              <Paper className={classes.paper}>
+                <Box textAlign="center" mb={2}>
+                  <Typography fontWeight="bold" variant="h5">
+                    Jogar agora!
                   </Typography>
                 </Box>
-              </Box>
-            </Button>
-          </Grid>
 
-          <Grid item xs={4}>
-            <Button variant="outlined" color="secondary" className={`${classes.button} ${classes.enter} buttonLobby`}>
-              {spanLayout.map((_, index) => (<span key={index} />))}
+                <Box mb={2}>
+                  <Button
+                    fullWidth
+                    color="primary"
+                    variant="outlined"
+                    onClick={() => setOpenQueue(true)}
+                    className={`${classes.button} ${classes.create} buttonLobby`}
+                  >
+                    {spanLayout.map((_, index) => (<span key={index} />))}
 
-              <Box>
-                <Box>
-                  <SVG
-                    width={60}
-                    height={60}
-                    src={icoMolotov}
-                    stroke={colors.lobby.enter}
-                  />
+                    <Box p={1} display="flex" alignItems="center">
+                      <Box mr={1}>
+                        <SVG
+                          width={30}
+                          height={30}
+                          src={icoCalibur}
+                          stroke={colors.lobby.create}
+                        />
+                      </Box>
+
+                      Encontrar partida
+                    </Box>
+                  </Button>
                 </Box>
+              </Paper>
+            </Grid>
 
-                <Box>
-                  <Typography fontWeight={100} variant="h6">
-                    Entrar numa partida
+            <Grid item xs={12} md={4}>
+              <Paper className={classes.paper}>
+                <Box textAlign="center" mb={2}>
+                  <Typography fontWeight="bold" variant="h5">
+                    Amigos:
                   </Typography>
                 </Box>
-              </Box>
-            </Button>
-          </Grid>
 
-          <Grid item xs={4}>
-            <Button variant="outlined" color="secondary" className={`${classes.button} ${classes.invite} buttonLobby`}>
-              {spanLayout.map((_, index) => (<span key={index} />))}
-
-              <Box>
-                <Box>
-                  <SVG
-                    width={60}
-                    height={60}
-                    src={icoInvite}
-                    fill={colors.lobby.invite}
-                    stroke={colors.lobby.invite}
-                    color={colors.lobby.invite}
-                  />
+                <Box mb={2}>
+                  <Friends isPanel />
                 </Box>
 
                 <Box>
-                  <Typography fontWeight={100} variant="h6">
-                    Convidar
-                  </Typography>
+                  <Button color="secondary" fullWidth variant="text" onClick={() => history.push('/friends')}>
+                    Ver todos...
+                  </Button>
                 </Box>
-              </Box>
-            </Button>
+              </Paper>
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
+
+        {openQueue && (
+          <QueueModal
+            open={openQueue}
+            queue={queue}
+            setOpenQueue={setOpenQueue}
+            setQueue={setQueue}
+            connection={connection}
+            matchStarted={matchStarted}
+            setMatchStarted={setMatchStarted}
+            ipAddress={ipAddress}
+            setIpAddress={setIpAddress}
+          />
+        )}
       </Box>
-    </Box>
+    </>
   )
 }
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Redirect, Route } from 'react-router-dom'
+import { Route, useHistory } from 'react-router-dom'
 import useSecurity from 'security/useSecurity'
 
 const PrivateRoute = (props) => {
@@ -9,8 +9,14 @@ const PrivateRoute = (props) => {
     component: Component,
     ...rest
   } = props
-  const { isLogged } = useSecurity()
-  if (!isLogged()) { return <Redirect to="/login" /> }
+  const { user } = useSecurity()
+  const history = useHistory()
+
+  if (!user) {
+    history.push('/login')
+
+    return <div />
+  }
 
   return (
     <Route
@@ -28,6 +34,7 @@ PrivateRoute.propTypes = {
   functionality: PropTypes.string || PropTypes.array,
   component: PropTypes.any,
   layout: PropTypes.any.isRequired,
+  path: PropTypes.string.isRequired,
 }
 
 PrivateRoute.defaultProps = {

@@ -12,6 +12,7 @@ import {
 import { makeStyles } from '@mui/styles'
 import CloseIcon from '@mui/icons-material/Close'
 
+import { colors } from 'theme'
 import icoError from '../../assets/ico/ico-alert-danger.svg'
 import icoAlert from '../../assets/ico/ico-alert-warning.svg'
 import icoSuccess from '../../assets/ico/ico-alert-success.svg'
@@ -21,8 +22,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   boxBtn: {
-    marginLeft: '8px !important',
-    marginRight: '8px !important',
+    margin: '8px !important',
   },
   close: {
     cursor: 'pointer',
@@ -95,7 +95,7 @@ const MessageBox = (props) => {
 
         {title && (
           <Box mt={2} mb={3}>
-            <Typography align="center" variant="h5">
+            <Typography align="center" variant="h5" color={colors.text.secundary}>
               {title}
             </Typography>
           </Box>
@@ -104,6 +104,7 @@ const MessageBox = (props) => {
         {text && (
           <Box mt={2} mb={3} align="center">
             <Typography
+              color={colors.text.secundary}
               align="center"
               dangerouslySetInnerHTML={{ __html: text }}
             />

@@ -3,19 +3,19 @@ import { Redirect } from 'react-router-dom'
 import Steam from 'extensions/steam'
 import { useSecurityAction } from 'security/store/ducks/security'
 import Resolve from 'components/Resolve/Resolve'
-import useClient from '../../clients/Client/useClient'
+import useClient from 'clients/Client/useClient'
 
 const steam = new Steam()
 const SteamCallback = () => {
   const steamResponse = steam.getSteamResponse()
   const steamId = steam.getSteamIdFromSteamResponse(steamResponse)
   const { setUser } = useSecurityAction()
-  const client = useClient()
+  const appClient = useClient()
 
   const handleResolve = useMemo(
     () => ({
-      user: () => new Promise((resolve, reject) => {
-        client().getUser(steamId).then(
+      appUser: () => new Promise((resolve, reject) => {
+        appClient().getUser(steamId).then(
           (response) => {
             resolve(response.data)
           },
@@ -26,23 +26,26 @@ const SteamCallback = () => {
       }),
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [client],
+    [appClient],
   )
 
   const handleLoaded = useCallback((data, resolve) => {
-    const { user } = data
-    user.expires_at = Math.round(Date.now() / 1000 + 30)
+    const { appUser } = data
+    const user = appUser ?? {}
 
-    setUser(user)
+    const userSecurity = {
+      ...user,
+      ...appUser,
+      steamId,
+    }
+
+    setUser(userSecurity)
     resolve()
-  }, [setUser])
+  }, [setUser, steamId])
 
   return (
     <>
-      <Resolve
-        onLoaded={handleLoaded}
-        resolve={handleResolve}
-      >
+      <Resolve onLoaded={handleLoaded} resolve={handleResolve}>
         <Redirect to="/lobby" />
       </Resolve>
     </>

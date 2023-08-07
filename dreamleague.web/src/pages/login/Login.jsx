@@ -17,11 +17,12 @@ const useStyles = makeStyles(() => ({
     border: `1px solid ${colors.login.login} !important`,
   },
 }))
+
 const steam = new Steam()
 
 const Login = () => {
-  const classes = useStyles()
   const spanLayout = [0, 1, 2, 3]
+  const classes = useStyles()
 
   return (
     <Box display="flex" alignItems="center" justifyContent="center" height={1}>

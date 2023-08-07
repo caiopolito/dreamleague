@@ -1,9 +1,11 @@
 import React from 'react'
 import { Box } from '@mui/material'
 import PropTypes from 'prop-types'
+import useStyles from './style'
 
 const LoginLayout = (props) => {
   const { children } = props
+  const classes = useStyles()
 
   return (
     <Box
@@ -11,7 +13,7 @@ const LoginLayout = (props) => {
       minHeight="100vh"
       alignItems="center"
       justifyContent="center"
-      backgroundColor="#1b1d1d"
+      className={classes.container}
     >
       {children}
     </Box>

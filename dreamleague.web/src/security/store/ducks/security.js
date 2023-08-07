@@ -63,7 +63,7 @@ export const useSecurityAction = () => {
   const cleanUser = useCallback(
     () => dispatch({
       type: Types.USER,
-      payload: { user: {} },
+      payload: { user: null },
     }),
     [dispatch],
   )
