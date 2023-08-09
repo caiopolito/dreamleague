@@ -7,6 +7,7 @@
 
         }
         public string? DefaultConnection { get; init; }
-        public string? BlobStorageConnection { get; set; }
+        public string? MongoConnection { get; init; }
+        public string? MongoDatabaseName { get; init; }
     }
 }

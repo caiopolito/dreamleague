@@ -8,7 +8,7 @@ namespace dreamleague.infrastructure.UoW
         public IPlayerRepository PlayerRepository { get; private set; }
         public IChatRepository ChatRepository { get; private set; }
         public IServerRepository ServerRepository { get; private set; }
-        //public IAzureBlobStorageRepository AzureBlobStorageRepository { get; private set; }
+        public IMatchStorageRepository MatchStorageRepository { get; private set; }
         public IMatchRepository MatchRepository { get; private set; }
         public ITeamRepository TeamRepository { get; private set; }
         public IChampionshipRepository ChampionshipRepository { get; private set; }
@@ -21,7 +21,7 @@ namespace dreamleague.infrastructure.UoW
             IPlayerRepository playerRepository, 
             IChatRepository chatRepository,
             IServerRepository serverRepository,
-            //IAzureBlobStorageRepository azureBlobStorageRepository,
+            IMatchStorageRepository matchStorageRepository,
             IMatchRepository matchRepository,
             ITeamRepository teamRepository,
             IChampionshipRepository championshipRepository,
@@ -33,7 +33,7 @@ namespace dreamleague.infrastructure.UoW
             PlayerRepository = playerRepository;
             ChatRepository = chatRepository;
             ServerRepository = serverRepository;
-            //AzureBlobStorageRepository = azureBlobStorageRepository;
+            MatchStorageRepository = matchStorageRepository;
             MatchRepository = matchRepository;
             TeamRepository = teamRepository;
             ChampionshipRepository = championshipRepository;

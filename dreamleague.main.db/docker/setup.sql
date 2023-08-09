@@ -161,6 +161,7 @@ CREATE TABLE team_players (
 	player_id VARCHAR(50) FOREIGN KEY REFERENCES players(steam_id),
 	is_captain BIT NOT NULL
 )
+
 COMMIT TRANSACTION T1
 
 

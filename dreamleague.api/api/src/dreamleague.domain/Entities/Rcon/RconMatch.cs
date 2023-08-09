@@ -1,11 +1,16 @@
-﻿using dreamleague.domain.Aggregates.CreateMatch;
-using dreamleague.domain.Entities.Get5;
+﻿using dreamleague.domain.Entities.Get5;
 
 namespace dreamleague.domain.Entities.Rcon
 {
     public class RconMatch
     {
-        public string json_file_name { get => match_title + "_" + matchid; }
+        public RconMatch(Match match, TeamMatch team1, TeamMatch team2)
+        {
+            this.team1 = team1;
+            this.team2 = team2;
+            matchid = match.MatchId;
+            server_id = match.ServerId;
+        }
         public string match_title { get => "match_live"; }
         public string matchid { get; set; }
         public Guid server_id { get; set; }
@@ -36,23 +41,5 @@ namespace dreamleague.domain.Entities.Rcon
         public List<string> map_sides { get; set; } = new List<string>();
         public TeamMatch team1 { get; set; }
         public TeamMatch team2 { get; set; }
-
-        public static implicit operator RconMatch(CreateMatchRequest request)
-        {
-
-            return new RconMatch
-            {
-                team1 = new TeamMatch
-                {
-                    tag = "T1",
-                    players = request.Players.Take(1).ToDictionary(item => item.Value.SteamId, item => item.Value.Name)
-                },
-                team2 = new TeamMatch
-                {
-                    tag = "T2",
-                    players = request.Players.TakeLast(1).ToDictionary(item => item.Value.SteamId, item => item.Value.Name)
-                }
-            };
-        }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using dreamleague.domain.Infrastructure;
 using dreamleague.infrastructure.Database;
-using dreamleague.infrastructure.Repositories.Azure;
 using dreamleague.infrastructure.Repositories.Championships;
 using dreamleague.infrastructure.Repositories.Chats;
 using dreamleague.infrastructure.Repositories.Matches;
+using dreamleague.infrastructure.Repositories.MatchStorage;
 using dreamleague.infrastructure.Repositories.Notifications;
 using dreamleague.infrastructure.Repositories.Players;
 using dreamleague.infrastructure.Repositories.Rcon;
@@ -24,7 +24,7 @@ namespace dreamleague.api.Configurations
                     .AddScoped<IMatchRepository, MatchRepository>()
                     .AddScoped<IChampionshipRepository, ChampionshipRepository>()
                     .AddScoped<ITeamRepository, TeamRepository>()
-                    .AddScoped<IAzureBlobStorageRepository, AzureBlobStorageRepository>()
+                    .AddScoped<IMatchStorageRepository, MatchStorageRepository>()
                     .AddScoped<INotificationRepository, NotificationRepository>()
                     .AddScoped<IRconRepository, RconRepository>()
                     .AddScoped<IUnitOfWork, UnitOfWork>()

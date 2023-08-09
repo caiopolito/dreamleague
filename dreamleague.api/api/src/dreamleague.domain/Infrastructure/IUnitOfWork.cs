@@ -6,7 +6,7 @@
         public IPlayerRepository PlayerRepository { get; }
         public IChatRepository ChatRepository { get; }
         public IServerRepository ServerRepository { get; }
-        //public IAzureBlobStorageRepository AzureBlobStorageRepository { get; }
+        public IMatchStorageRepository MatchStorageRepository { get; }
         public IMatchRepository MatchRepository { get; }
         public ITeamRepository TeamRepository { get; }
         public IChampionshipRepository ChampionshipRepository { get; }

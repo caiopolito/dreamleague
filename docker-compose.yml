@@ -1,13 +1,18 @@
 version: "3.3"
 
+networks:
+  dreamleague-network: {}
+
 volumes:
-  dreamleague-db:
-    name: 'dreamleague-db'
+  dreamleague-main-db:
+    name: 'dreamleague-main-db'
+  dreamleague-matches-db:
+    name: 'dreamleague-matches-db'
 
 services:
-  database:
+  database-main:
     build:
-      context: ./dreamleague.db/docker
+      context: ./dreamleague.main.db/docker
       dockerfile: Dockerfile
     restart: always
     environment:
@@ -17,18 +22,39 @@ services:
     ports:
       - 1433:1433
     volumes:
-      - dreamleague-db:/var/opt/mssql
+      - dreamleague-main-db:/var/opt/mssql
+    networks:
+      - dreamleague-network
 
+  database-matches:
+    build:
+      context: ./dreamleague.matches.db/docker
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: Password1234!
+    ports:
+      - 27017:27017
+    volumes:
+      - dreamleague-matches-db:/data/db
+    networks:
+      - dreamleague-network
 
   api:
     build:
       context: ./dreamleague.api
       dockerfile: docker/Dockerfile
     depends_on:
-      database:
+      database-main:
+        condition: service_healthy
+        restart: true
+      database-matches:
         condition: service_healthy
         restart: true
     ports:
       - 41010:80
+    networks:
+      - dreamleague-network
 
     
