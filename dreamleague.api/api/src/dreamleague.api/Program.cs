@@ -34,6 +34,7 @@ builder.Services.AddSignalR(o => { o.EnableDetailedErrors = true; });
 
 // Inject dependencies
 builder.Services.ConfigInfrastructures();
+builder.Services.ConfigAdapters();
 builder.Services.ConfigValidators();
 builder.Services.ConfigServices();
 builder.Services.ConfigHttpRepos(applicationConfig);
@@ -75,7 +76,6 @@ if (app.Environment.IsDevelopment())
 }
 app.UseRouting();
 app.UseCors("CorsPolicy");
-app.UseHttpsRedirection();
 app.MapControllers();
 app.UseEndpoints(endpoints =>
 {

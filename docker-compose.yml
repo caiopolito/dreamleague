@@ -52,8 +52,35 @@ services:
       database-matches:
         condition: service_healthy
         restart: true
+    environment:
+      - ASPNETCORE_URLS=https://+:5001;http://+:5000
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/dockerapissl.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Password1234!
     ports:
-      - 41010:80
+      - 5000:5000
+      - 5001:5001
+    networks:
+      - dreamleague-network
+    volumes:
+      - ~/.aspnet/https:/https:ro
+
+  app:
+    build:
+      context: ./dreamleague.app
+      dockerfile: docker/Dockerfile
+    depends_on:
+      database-main:
+        condition: service_healthy
+        restart: true
+      database-matches:
+        condition: service_healthy
+        restart: true
+      api:
+        condition: service_started
+        restart: true
+    ports:
+      - 3000:3000
     networks:
       - dreamleague-network
 
