@@ -26,6 +26,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // Inject application config
+builder.Configuration.AddJsonFile("appsettings.json").AddEnvironmentVariables();
 var applicationConfig = builder.Configuration.Get<ApplicationConfig>();
 builder.Services.AddSingleton(applicationConfig);
 
