@@ -4,25 +4,31 @@ networks:
   dreamleague-network: {}
 
 volumes:
+  dreamleague-gameserver:
+    name: 'dreamleague-gameserver'
   dreamleague-main-db:
     name: 'dreamleague-main-db'
   dreamleague-matches-db:
     name: 'dreamleague-matches-db'
+  dreamleague-mongo-db:
+    name: 'dreamleague-mongo-db'
 
 services:
-  database-main:
+  gameserver:
     build:
-      context: ./dreamleague.main.db/docker
+      context: ./dreamleague.gameserver/docker
       dockerfile: Dockerfile
+      args:
+        METAMODURL: https://mms.alliedmods.net/mmsdrop/2.0/mmsource-2.0.0-git1282-linux.tar.gz
+        CSSHARPURL: https://github.com/roflmuffin/CounterStrikeSharp/releases/download/v179/counterstrikesharp-with-runtime-build-179-linux-12485be.zip
+        MATCHZYURL: https://github.com/shobhit-pathak/MatchZy/releases/download/0.7.0/matchzy-0.7.0.zip
     restart: always
-    environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=Password1234!
-      - MSSQL_PID=Developer
     ports:
-      - 1433:1433
+      - 27015:27015/tcp
+      - 27015:27015/udp
+      - 27020:27020/udp
     volumes:
-      - dreamleague-main-db:/var/opt/mssql
+      - dreamleague-gameserver:/home/steam/cs2server/
     networks:
       - dreamleague-network
 
@@ -38,6 +44,27 @@ services:
       - 27017:27017
     volumes:
       - dreamleague-matches-db:/data/db
+      - dreamleague-mongo-db:/data/configdb
+    networks:
+      - dreamleague-network
+
+  database-main:
+    build:
+      context: ./dreamleague.main.db/docker
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      gameserver:
+        condition: service_started
+        restart: true
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Password1234!
+      - MSSQL_PID=Developer
+    ports:
+      - 1433:1433
+    volumes:
+      - dreamleague-main-db:/var/opt/mssql
     networks:
       - dreamleague-network
 
@@ -83,5 +110,6 @@ services:
       - 3000:3000
     networks:
       - dreamleague-network
+      
 
     
