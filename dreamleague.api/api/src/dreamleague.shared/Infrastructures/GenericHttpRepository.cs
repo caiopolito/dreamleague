@@ -8,14 +8,14 @@ namespace dreamleague.shared.Infrastructures
 {
     public abstract class GenericHttpRepository
     {
-        private readonly HttpClient _httpClient;
+        protected readonly HttpClient _httpClient;
 
         public GenericHttpRepository(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-        protected async Task<T> GetAsync<T>(string url, Dictionary<string, string>? pathParams = null)
+        protected async Task<GenericHttpResponse<T>> GetAsync<T>(string url, Dictionary<string, string>? pathParams = null)
         {
             if (pathParams != null)
                 url = QueryHelpers.AddQueryString(url, pathParams);
@@ -24,7 +24,7 @@ namespace dreamleague.shared.Infrastructures
             return await HandleResponse<T>(response);
         }
 
-        protected async Task<T> PostAsync<T>(string url, object request)
+        protected async Task<GenericHttpResponse<T>> PostAsync<T>(string url, object request)
         {
             var uri = new Uri(url, UriKind.Relative);
             using var content = GetContent(request);
@@ -32,7 +32,7 @@ namespace dreamleague.shared.Infrastructures
             return await HandleResponse<T>(response);
         }
 
-        protected async Task<T> PutAsync<T>(string url, object request)
+        protected async Task<GenericHttpResponse<T>> PutAsync<T>(string url, object request)
         {
             var uri = new Uri(url, UriKind.Relative);
             using var content = GetContent(request);
@@ -54,11 +54,22 @@ namespace dreamleague.shared.Infrastructures
             return new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json);
         }
 
-        protected async Task<T> HandleResponse<T>(HttpResponseMessage response)
+        protected async Task<GenericHttpResponse<T>> HandleResponse<T>(HttpResponseMessage response)
         {
             if (!response.IsSuccessStatusCode)
-                throw new Exception(Resources.ExternalServerError, new Exception(await response.Content.ReadAsStringAsync()));
-            return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+                return new GenericHttpResponse<T>
+                {
+                    StatusCode = response.StatusCode,
+                    Errors = new[] { Resources.ExternalServerError }
+                };
+
+            var content = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+
+            return new GenericHttpResponse<T>
+            {
+                StatusCode = response.StatusCode,
+                Content = content
+            };  
         }
         protected Task HandleResponse(HttpResponseMessage response)
         {

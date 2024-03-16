@@ -1,7 +1,9 @@
 ﻿using dreamleague.domain.Aggregates.GetUserFriends;
+using dreamleague.domain.Entities.Steam;
 using dreamleague.domain.Infrastructure;
 using dreamleague.domain.Services.Users;
 using dreamleague.shared.Services;
+using System.Net;
 
 namespace dreamleague.services.Services.Users
 {
@@ -17,9 +19,18 @@ namespace dreamleague.services.Services.Users
         {
             var steamFriends = await unitOfWork.SteamUserRepository.GetPlayerFriendsAsync(request.SteamId);
             var dreamLeaguePlayers = await unitOfWork.PlayerRepository.GetAllPlayersAsync();
+
+
+            // Usually indicates that the user has a private friends list
+            // TODO: Identify whether it's just a private profile or a real unauthorized request
+            if (steamFriends.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                steamFriends.Content = new SteamResponses();
+            }
+
             return new GetUserFriendsResponse
             {
-                friends = steamFriends.friendsList.friends.Where(x =>
+                friends = steamFriends.Content.friendsList.friends.Where(x =>
                     dreamLeaguePlayers.Any(y => y.SteamId == x.steamid)
                 ).ToList()
             };

@@ -16,7 +16,10 @@ namespace dreamleague.services.Services.Users
         protected async override Task<GetUserInfoResponse> OnExecute(GetUserInfoRequest request)
         {
             var response = await unitOfWork.SteamUserRepository.GetPlayerSummariesAsync(new string[] { request.SteamId });
-            var player = response.response.players.First();
+
+            var playerSummaries = response.Content;
+
+            var player = playerSummaries.response.players.First();
             var playerInfo = await unitOfWork.PlayerRepository.GetPlayerInfoBySteamIdAsync(request.SteamId);
 
             if (playerInfo == null)

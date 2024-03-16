@@ -15,7 +15,7 @@ namespace dreamleague.infrastructure.Repositories.SteamUsers
             _applicationConfig = applicationConfig;
         }
 
-        public async Task<SteamResponses> GetPlayerSummariesAsync(string[] steamids)
+        public async Task<GenericHttpResponse<SteamResponses>> GetPlayerSummariesAsync(string[] steamids)
         {
             var parameters = new Dictionary<string, string>() { { "key", _applicationConfig.Authentication.SteamApiKey } };
             var steamidsquery = string.Join(",", steamids);
@@ -23,15 +23,14 @@ namespace dreamleague.infrastructure.Repositories.SteamUsers
             return await GetAsync<SteamResponses>($"{PlayerSummariesEndpoint}", parameters);
         }
 
-        public async Task<SteamResponses> GetPlayerFriendsAsync(string steamid)
+        public async Task<GenericHttpResponse<SteamResponses>>
+            GetPlayerFriendsAsync(string steamid)
         {
             var parameters = new Dictionary<string, string>() { { "key", _applicationConfig.Authentication.SteamApiKey } };
             parameters.TryAdd("steamid",steamid);
             parameters.TryAdd("relationship", "friend");
             
-            var response = await GetAsync<SteamResponses>($"{PlayerFriendsEndpoint}", parameters);
-
-            return response;
+            return await GetAsync<SteamResponses>($"{PlayerFriendsEndpoint}", parameters);
         }
     }
 }

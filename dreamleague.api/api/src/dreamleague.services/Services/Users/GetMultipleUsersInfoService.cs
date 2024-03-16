@@ -1,4 +1,5 @@
-﻿using dreamleague.domain.Aggregates.GetMultipleUsersInfo;
+﻿using Azure;
+using dreamleague.domain.Aggregates.GetMultipleUsersInfo;
 using dreamleague.domain.Infrastructure;
 using dreamleague.domain.Services.Users;
 using dreamleague.shared.Services;
@@ -14,7 +15,10 @@ namespace dreamleague.services.Services.Users
         }
         protected override async Task<GetMultipleUsersInfoResponse> OnExecute(GetMultipleUsersInfoRequest request)
         {
-            return await unitOfWork.SteamUserRepository.GetPlayerSummariesAsync(request.SteamIds);
+            var response = await unitOfWork.SteamUserRepository.GetPlayerSummariesAsync(request.SteamIds);
+
+
+            return response.Content;
         }
     }
 }

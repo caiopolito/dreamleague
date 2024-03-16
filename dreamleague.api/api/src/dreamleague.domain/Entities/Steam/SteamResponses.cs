@@ -9,7 +9,7 @@ namespace dreamleague.domain.Entities.Steam
         {
 
         }
-        public PlayersSummaries? response { get; set; }
-        public PlayerFriends friendsList { get; set; }
+        public PlayersSummaries? response { get; set; } = new PlayersSummaries();
+        public PlayerFriends friendsList { get; set; } = new PlayerFriends();
     }
 }
