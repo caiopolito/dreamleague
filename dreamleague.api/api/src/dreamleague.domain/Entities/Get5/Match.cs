@@ -7,11 +7,11 @@ namespace dreamleague.domain.Entities.Get5
         public string MatchId { get; set; }
         public string MatchTitle { get => "match_live"; }
         public Guid ServerId { get; set; }
-        public int Team1Id { get; set; }
-        public int Team2Id { get; set; }
+        public Guid Team1Id { get; set; }
+        public Guid Team2Id { get; set; }
         public string Team1String { get; set; }
         public string Team2String { get; set; }
-        public int? Winner { get; set; }
+        public Guid? Winner { get; set; }
         public string PluginVersion { get; set; }
         public bool? Forfeit { get; set; }
         public bool? Cancelled { get; set; }

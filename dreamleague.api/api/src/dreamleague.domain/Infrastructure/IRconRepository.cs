@@ -8,7 +8,7 @@ namespace dreamleague.domain.Infrastructure
     {
         Task<Status> CheckConnectionAsync(Server server);
         Task<RconAvailable> CheckAvailabilityAsync(Server server);
-        Task StartMatchInServerAsync(Server server, string fileName);
+        Task StartMatchInServerAsync(Server server, string matchId);
         Task SetGet5ApiKeyAsync(Server server, string apiKey);
     }
 }

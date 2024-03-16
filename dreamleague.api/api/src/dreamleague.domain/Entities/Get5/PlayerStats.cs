@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public int MatchId { get; set; }
         public int MapId { get; set; }
-        public int TeamId { get; set; }
+        public Guid TeamId { get; set; }
         public string SteamId { get; set; }
         public string Name { get; set; }
         public int Kills { get; set; }

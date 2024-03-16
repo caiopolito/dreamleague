@@ -5,7 +5,9 @@ using dreamleague.domain.Entities.Rcon;
 using dreamleague.domain.Entities.Servers;
 using dreamleague.domain.Infrastructure;
 using dreamleague.domain.Services.Match;
+using dreamleague.shared.Configurations;
 using dreamleague.shared.Services;
+using MongoDB.Bson;
 
 namespace dreamleague.services.Services.Matches
 {
@@ -13,14 +15,17 @@ namespace dreamleague.services.Services.Matches
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly ICreateMatchAdapter adapter;
+        private readonly ApplicationConfig applicationConfig;
         public CreateMatchService
             (
                 IUnitOfWork unitOfWork,
-                ICreateMatchAdapter adapter
+                ICreateMatchAdapter adapter,
+                ApplicationConfig applicationConfig
             )
         {
             this.unitOfWork = unitOfWork;
             this.adapter = adapter;
+            this.applicationConfig = applicationConfig;
         }
         protected async override Task<CreateMatchResponse> OnExecute(CreateMatchRequest request)
         {
@@ -31,10 +36,10 @@ namespace dreamleague.services.Services.Matches
             if (availability.available != 1)
                 throw new NotImplementedException("Server not available!");
 
-            var firstPlayers = request.Players.Take(1);
+            var firstPlayers = request.Players.Take(applicationConfig.Queue.MinPlayersPerTeam);
             var team1 = await unitOfWork.MatchRepository.CreateTeamAsync(adapter.ToTeamMatch(firstPlayers));
 
-            var lastPlayers = request.Players.TakeLast(1);
+            var lastPlayers = request.Players.TakeLast(applicationConfig.Queue.MinPlayersPerTeam);
             var team2 = await unitOfWork.MatchRepository.CreateTeamAsync(adapter.ToTeamMatch(lastPlayers));
 
             request.Team1Id = team1.id;
@@ -48,7 +53,7 @@ namespace dreamleague.services.Services.Matches
 
             await unitOfWork.MatchStorageRepository.CreateMatchJsonFileAsync(rconMatch);
 
-            await unitOfWork.RconRepository.StartMatchInServerAsync(server, "filename // To Do (remove this)");
+            await unitOfWork.RconRepository.StartMatchInServerAsync(server, match.MatchId);
 
             await unitOfWork.RconRepository.SetGet5ApiKeyAsync(server, match.ApiKey);
 

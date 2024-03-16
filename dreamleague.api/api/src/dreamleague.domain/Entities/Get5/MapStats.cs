@@ -8,7 +8,7 @@
         public string MapName { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
-        public int? Winner { get; set; }
+        public Guid? Winner { get; set; }
         public int Team1Score { get; set; }
         public int Team2Score { get; set; }
     }

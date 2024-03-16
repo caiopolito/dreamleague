@@ -2,7 +2,7 @@
 {
     public class TeamMatch
     {
-        public int id { get; set; }
+        public Guid id { get; set; }
         public string name { get; set; } = "";
         public string tag { get; set; }
         public string flag { get; set; } = "BR";

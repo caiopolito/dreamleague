@@ -73,6 +73,7 @@ namespace dreamleague.infrastructure.Repositories.Matches
                 }
 
                 transactionScope.Complete();
+                inserted.players = team.players;
                 return inserted;
             }
             catch (Exception)
@@ -345,7 +346,7 @@ namespace dreamleague.infrastructure.Repositories.Matches
             }
         }
 
-        public async Task<IEnumerable<PlayerResults>> GetPlayersByMatchAndTeamIdAsync(int matchId, int teamId)
+        public async Task<IEnumerable<PlayerResults>> GetPlayersByMatchAndTeamIdAsync(int matchId, Guid teamId)
         {
             using var connection = databaseFactory.GetConnection();
             try

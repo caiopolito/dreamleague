@@ -57,7 +57,7 @@ namespace dreamleague.shared.Infrastructures
         protected async Task<T> HandleResponse<T>(HttpResponseMessage response)
         {
             if (!response.IsSuccessStatusCode)
-                throw new Exception(Resources.ExternalServerError);
+                throw new Exception(Resources.ExternalServerError, new Exception(await response.Content.ReadAsStringAsync()));
             return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
         }
         protected Task HandleResponse(HttpResponseMessage response)

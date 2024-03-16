@@ -35,15 +35,15 @@ namespace dreamleague.infrastructure.Repositories.Rcon
 
             var response = await rcon.SendCommandAsync("get5_web_available");
 
-            return JsonConvert.DeserializeObject<RconAvailable>(response.Substring(0, response.IndexOf($"L {DateTime.Today:MM/dd/yyyy}")));
+            return JsonConvert.DeserializeObject<RconAvailable>(response);
         }
 
-        public async Task StartMatchInServerAsync(Server server, string fileName)
+        public async Task StartMatchInServerAsync(Server server, string matchId)
         {
             var rcon = new RCON(IPAddress.Parse(server.IpAddress), (ushort)server.Port, server.RconPassword);
             await rcon.ConnectAsync();
 
-            await rcon.SendCommandAsync($"get5_loadmatch_url {appConfig.Apis.BlobStorage}{fileName}.json");
+            await rcon.SendCommandAsync($"dreamleague_loadmatch {matchId}");
         }
 
         public async Task SetGet5ApiKeyAsync(Server server, string apiKey)

@@ -16,6 +16,6 @@ namespace dreamleague.domain.Infrastructure
         Task CreateMatchMapPlayerStatsAsync(int matchId, int mapId, string steamId);
         Task<IEnumerable<MatchResult>> GetPlayerMatchesBySteamIdAsync(string steamId);
         Task<IEnumerable<string>> GetPlayersByMatchIdAsync(int matchId);
-        Task<IEnumerable<PlayerResults>> GetPlayersByMatchAndTeamIdAsync(int matchId, int teamId);
+        Task<IEnumerable<PlayerResults>> GetPlayersByMatchAndTeamIdAsync(int matchId, Guid teamId);
     }
 }

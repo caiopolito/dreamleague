@@ -28,7 +28,10 @@ namespace dreamleague.infrastructure.Repositories.SteamUsers
             var parameters = new Dictionary<string, string>() { { "key", _applicationConfig.Authentication.SteamApiKey } };
             parameters.TryAdd("steamid",steamid);
             parameters.TryAdd("relationship", "friend");
-            return await GetAsync<SteamResponses>($"{PlayerFriendsEndpoint}", parameters);
+            
+            var response = await GetAsync<SteamResponses>($"{PlayerFriendsEndpoint}", parameters);
+
+            return response;
         }
     }
 }

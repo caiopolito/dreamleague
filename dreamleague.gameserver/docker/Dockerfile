@@ -1,8 +1,11 @@
 FROM cm2network/steamcmd:root as build
 
 ARG METAMODURL=https://mms.alliedmods.net/mmsdrop/2.0/mmsource-2.0.0-git1282-linux.tar.gz
-ARG CSSHARPURL=https://github.com/roflmuffin/CounterStrikeSharp/releases/download/v179/counterstrikesharp-with-runtime-build-179-linux-12485be.zip
-ARG MATCHZYURL=https://github.com/shobhit-pathak/MatchZy/releases/download/0.7.0/matchzy-0.7.0.zip
+ARG CSSHARPURL=https://github.com/roflmuffin/CounterStrikeSharp/releases/download/v193/counterstrikesharp-with-runtime-build-193-linux-36a97bf.zip
+ARG MATCHZYURL=https://github.com/caiopolito/MatchZy/releases/download/alpha-v0.1/matchzy-dreamleague-alpha-v0.1.zip
+ARG DREAMLEAGUE_MATCH_DATABASE=mongodb://root:Password1234!@dreamleague-database-matches-1:27017
+ARG DREAMLEAGUE_MATCH_DATABASE_NAME=dreamleague
+ARG DREAMLEAGUE_MATCH_DATABASE_COLLECTION=matches
 
 ENV STEAMAPPID=730 \
     STEAMAPP="cs2"
@@ -62,6 +65,11 @@ RUN    set -x \
     && chown -R "${USER}:${USER}" "${STEAMAPPDIR}" \
     && chmod 0777 "${STEAMAPPDIR}"
 
+RUN sed -i -e "s|{{DREAMLEAGUE_MATCH_DATABASE}}|${DREAMLEAGUE_MATCH_DATABASE}|g" \
+        -e "s|{{DREAMLEAGUE_MATCH_DATABASE_NAME}}|${DREAMLEAGUE_MATCH_DATABASE_NAME}|g" \
+        -e "s|{{DREAMLEAGUE_MATCH_DATABASE_COLLECTION}}|${DREAMLEAGUE_MATCH_DATABASE_COLLECTION}|g" \
+        "${STEAMAPPDIR}"/game/csgo/cfg/MatchZy/config.cfg
+        
 COPY entrypoint.sh "${HOMEDIR}/entrypoint.sh"
 COPY server.cfg "/etc/server.cfg"
 
