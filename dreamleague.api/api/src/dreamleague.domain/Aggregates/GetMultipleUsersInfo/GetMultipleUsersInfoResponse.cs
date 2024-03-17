@@ -1,5 +1,5 @@
-﻿using dreamleague.domain.Entities.Steam;
-using dreamleague.domain.Entities.Steam.PlayerSummary;
+﻿using dreamleague.common.Entities.Steam;
+using dreamleague.common.Entities.Steam.PlayerSummary;
 
 namespace dreamleague.domain.Aggregates.GetMultipleUsersInfo
 {

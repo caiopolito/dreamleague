@@ -1,5 +1,5 @@
 ﻿using dreamleague.domain.Aggregates.UpdateMatchMap;
-using dreamleague.domain.Entities.Get5;
+using dreamleague.common.Entities.Get5;
 using dreamleague.domain.Infrastructure;
 using dreamleague.domain.Services.Match;
 using dreamleague.shared.Services;

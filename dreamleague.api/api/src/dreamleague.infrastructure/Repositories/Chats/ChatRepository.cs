@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using dreamleague.domain.Aggregates.GetOrCreateChatInfo;
 using dreamleague.domain.Aggregates.SendMessage;
-using dreamleague.domain.Entities.Chat;
+using dreamleague.common.Entities.Chat;
 using dreamleague.domain.Infrastructure;
 
 

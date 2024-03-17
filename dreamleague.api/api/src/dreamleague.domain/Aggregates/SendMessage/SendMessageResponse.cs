@@ -1,4 +1,4 @@
-﻿using dreamleague.domain.Entities.Chat;
+﻿using dreamleague.common.Entities.Chat;
 
 namespace dreamleague.domain.Aggregates.SendMessage
 {

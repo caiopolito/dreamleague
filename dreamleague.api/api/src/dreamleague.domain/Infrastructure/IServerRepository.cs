@@ -1,4 +1,4 @@
-﻿using dreamleague.domain.Entities.Servers;
+﻿using dreamleague.common.Entities.Servers;
 
 namespace dreamleague.domain.Infrastructure
 {

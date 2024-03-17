@@ -1,6 +1,6 @@
 ﻿using dreamleague.domain.Aggregates.GetOrCreateChatInfo;
 using dreamleague.domain.Aggregates.SendMessage;
-using dreamleague.domain.Entities.Chat;
+using dreamleague.common.Entities.Chat;
 using dreamleague.domain.Services.Chat;
 using Microsoft.AspNetCore.SignalR;
 
@@ -40,7 +40,11 @@ namespace dreamleague.hubs.Hubs
 
                 await Groups.AddToGroupAsync(connectionId, chatInfo.ChatId.ToString(), Context.ConnectionAborted);
 
-                chats[connectionId] = chatInfo;
+                chats[connectionId] = new ChatInfo
+                {
+                    ChatId = chatInfo.ChatId,
+                    Messages = chatInfo.Messages
+                };
 
                 await Clients.Group(chatInfo.ChatId.ToString()).SendAsync("ReceiveMessage", chatInfo);
             }

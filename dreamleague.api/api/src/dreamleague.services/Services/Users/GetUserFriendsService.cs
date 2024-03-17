@@ -1,5 +1,5 @@
 ﻿using dreamleague.domain.Aggregates.GetUserFriends;
-using dreamleague.domain.Entities.Steam;
+using dreamleague.common.Entities.Steam;
 using dreamleague.domain.Infrastructure;
 using dreamleague.domain.Services.Users;
 using dreamleague.shared.Services;

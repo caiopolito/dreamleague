@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using dreamleague.domain.Entities.Notifications;
+using dreamleague.common.Entities.Notifications;
 using dreamleague.domain.Infrastructure;
 
 namespace dreamleague.infrastructure.Repositories.Notifications

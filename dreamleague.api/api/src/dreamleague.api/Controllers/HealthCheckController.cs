@@ -1,4 +1,4 @@
-﻿using dreamleague.domain.Entities.HealthCheck;
+﻿using dreamleague.common.Entities.HealthCheck;
 using dreamleague.domain.Services.HealthCheck;
 using Microsoft.AspNetCore.Mvc;
 

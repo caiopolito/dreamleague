@@ -1,6 +1,6 @@
 ﻿using dreamleague.domain.Aggregates.GetOrCreateChatInfo;
 using dreamleague.domain.Aggregates.SendMessage;
-using dreamleague.domain.Entities.Chat;
+using dreamleague.common.Entities.Chat;
 
 namespace dreamleague.domain.Infrastructure
 {

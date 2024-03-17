@@ -21,7 +21,7 @@ namespace dreamleague.services.Services.Teams
 
             var player = await unitOfWork.PlayerRepository.GetPlayerInfoBySteamIdAsync(request.SteamId);
 
-            await unitOfWork.TeamRepository.InsertPlayerIntoTeamAsync(new domain.Entities.Teams.PlayerTeam
+            await unitOfWork.TeamRepository.InsertPlayerIntoTeamAsync(new common.Entities.Teams.PlayerTeam
             {
                 SteamId = request.SteamId,
                 Name = player.Name,

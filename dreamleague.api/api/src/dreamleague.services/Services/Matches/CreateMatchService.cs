@@ -1,8 +1,8 @@
 ﻿using dreamleague.domain.Adapters.CreateMatch;
 using dreamleague.domain.Aggregates.CreateMatch;
-using dreamleague.domain.Entities.Get5;
-using dreamleague.domain.Entities.Rcon;
-using dreamleague.domain.Entities.Servers;
+using dreamleague.common.Entities.Get5;
+using dreamleague.common.Entities.Rcon;
+using dreamleague.common.Entities.Servers;
 using dreamleague.domain.Infrastructure;
 using dreamleague.domain.Services.Match;
 using dreamleague.shared.Configurations;
@@ -47,7 +47,7 @@ namespace dreamleague.services.Services.Matches
             request.Team2Id = team2.id;
             request.Team2String = team2.name;
 
-            var match = await unitOfWork.MatchRepository.CreateMatchAsync(request, server.Id);
+            var match = await unitOfWork.MatchRepository.CreateMatchAsync(adapter.ToGet5Match(request), server.Id);
 
             var rconMatch = new RconMatch(match, team1, team2);
 

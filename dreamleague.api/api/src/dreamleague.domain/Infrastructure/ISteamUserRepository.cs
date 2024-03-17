@@ -1,4 +1,4 @@
-﻿using dreamleague.domain.Entities.Steam;
+﻿using dreamleague.common.Entities.Steam;
 using dreamleague.shared.Infrastructures;
 
 namespace dreamleague.domain.Infrastructure

@@ -1,5 +1,5 @@
-﻿using dreamleague.domain.Entities.Rcon;
-using dreamleague.domain.Entities.Servers;
+﻿using dreamleague.common.Entities.Rcon;
+using dreamleague.common.Entities.Servers;
 
 namespace dreamleague.domain.Aggregates.CreateMatch
 {

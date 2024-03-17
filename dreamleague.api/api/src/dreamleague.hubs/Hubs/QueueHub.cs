@@ -1,7 +1,7 @@
 ﻿using dreamleague.domain.Aggregates.CreateMatch;
-using dreamleague.domain.Entities.Matches;
-using dreamleague.domain.Entities.Players;
-using dreamleague.domain.Entities.Servers;
+using dreamleague.common.Entities.Matches;
+using dreamleague.common.Entities.Players;
+using dreamleague.common.Entities.Servers;
 using dreamleague.domain.Services.Match;
 using dreamleague.shared.Configurations;
 using Microsoft.AspNetCore.SignalR;

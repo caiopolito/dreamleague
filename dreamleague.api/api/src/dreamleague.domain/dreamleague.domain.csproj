@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="CoreRCON" Version="5.0.5" />
+    <PackageReference Include="dreamleague.common" Version="1.0.1" />
     <PackageReference Include="EnumExtensions.System.Text.Json" Version="1.1.0" />
     <PackageReference Include="FluentValidation" Version="11.2.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.20.0" />

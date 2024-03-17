@@ -1,8 +1,0 @@
-﻿namespace dreamleague.domain.Entities.Steam.PlayerFriend
-{
-    public class Friend
-    {
-        public string steamid { get; set; }
-        public string relationship { get; set; }
-    }
-}

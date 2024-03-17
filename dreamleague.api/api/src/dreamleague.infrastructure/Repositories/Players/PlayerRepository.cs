@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using dreamleague.domain.Entities.Players;
+using dreamleague.common.Entities.Players;
 using dreamleague.domain.Infrastructure;
 using System.Data;
 

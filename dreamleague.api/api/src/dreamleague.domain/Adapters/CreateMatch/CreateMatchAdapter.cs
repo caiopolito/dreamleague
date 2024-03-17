@@ -1,8 +1,9 @@
 ﻿using dreamleague.domain.Aggregates.CreateMatch;
-using dreamleague.domain.Entities.Get5;
-using dreamleague.domain.Entities.Players;
-using dreamleague.domain.Entities.Rcon;
-using dreamleague.domain.Entities.Servers;
+using dreamleague.common.Entities.Get5;
+using dreamleague.common.Entities.Players;
+using dreamleague.common.Entities.Rcon;
+using dreamleague.common.Entities.Servers;
+using SharpCompress.Common;
 
 namespace dreamleague.domain.Adapters.CreateMatch
 {
@@ -32,5 +33,16 @@ namespace dreamleague.domain.Adapters.CreateMatch
             };
         }
 
+        public Match ToGet5Match(CreateMatchRequest request)
+        {
+            return new Match
+            {
+                Team1Id = request.Team1Id.Value,
+                Team2Id = request.Team2Id.Value,
+                Team1String = request.Team1String,
+                Team2String = request.Team2String,
+                ApiKey = request.ApiKey.ToString()
+            };
+        }
     }
 }

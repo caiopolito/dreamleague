@@ -1,5 +1,5 @@
-﻿using dreamleague.domain.Entities.Steam;
-using dreamleague.domain.Entities.Steam.PlayerFriend;
+﻿using dreamleague.common.Entities.Steam;
+using dreamleague.common.Entities.Steam.PlayerFriend;
 
 namespace dreamleague.domain.Aggregates.GetUserFriends
 {

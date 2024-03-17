@@ -1,6 +1,6 @@
 ﻿using dreamleague.hubs.Hubs;
 using dreamleague.domain.Aggregates.FinishMatch;
-using dreamleague.domain.Entities.Matches;
+using dreamleague.common.Entities.Matches;
 using dreamleague.domain.Infrastructure;
 using dreamleague.domain.Services.Match;
 using dreamleague.shared.Services;

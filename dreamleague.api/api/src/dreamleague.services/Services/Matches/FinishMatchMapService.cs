@@ -1,5 +1,5 @@
 ﻿using dreamleague.domain.Aggregates.FinishMatchMap;
-using dreamleague.domain.Entities.Players;
+using dreamleague.common.Entities.Players;
 using dreamleague.domain.Infrastructure;
 using dreamleague.domain.Services.Match;
 using dreamleague.shared.Services;

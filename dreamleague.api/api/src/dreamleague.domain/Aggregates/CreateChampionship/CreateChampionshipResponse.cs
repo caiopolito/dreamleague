@@ -1,4 +1,4 @@
-﻿using dreamleague.domain.Entities.Championships;
+﻿using dreamleague.common.Entities.Championships;
 
 namespace dreamleague.domain.Aggregates.CreateChampionship
 {

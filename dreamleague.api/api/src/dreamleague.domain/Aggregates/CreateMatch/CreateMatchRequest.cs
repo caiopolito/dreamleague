@@ -1,4 +1,4 @@
-﻿using dreamleague.domain.Entities.Players;
+﻿using dreamleague.common.Entities.Players;
 
 namespace dreamleague.domain.Aggregates.CreateMatch
 {

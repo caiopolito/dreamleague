@@ -1,10 +1,10 @@
-using dreamleague.domain.Entities.Chat;
-using dreamleague.domain.Entities.Players;
+using dreamleague.common.Entities.Chat;
+using dreamleague.common.Entities.Players;
 using dreamleague.shared.Configurations;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using dreamleague.hubs.Hubs;
-using dreamleague.domain.Entities.Matches;
+using dreamleague.common.Entities.Matches;
 using dreamleague.api.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);

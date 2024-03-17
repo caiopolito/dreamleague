@@ -1,4 +1,4 @@
-﻿using dreamleague.domain.Entities.Rcon;
+﻿using dreamleague.common.Entities.Rcon;
 using dreamleague.domain.Infrastructure;
 
 namespace dreamleague.infrastructure.Repositories.MatchStorage

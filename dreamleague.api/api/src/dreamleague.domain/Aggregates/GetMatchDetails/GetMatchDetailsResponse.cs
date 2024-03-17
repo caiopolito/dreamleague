@@ -1,4 +1,4 @@
-﻿using dreamleague.domain.Entities.Get5;
+﻿using dreamleague.common.Entities.Get5;
 
 namespace dreamleague.domain.Aggregates.GetMatchDetails
 {

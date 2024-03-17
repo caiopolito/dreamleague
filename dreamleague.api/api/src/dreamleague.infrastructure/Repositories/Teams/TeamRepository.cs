@@ -4,7 +4,7 @@ using dreamleague.domain.Aggregates.DeleteTeam;
 using dreamleague.domain.Aggregates.GetTeamById;
 using dreamleague.domain.Aggregates.GetTeams;
 using dreamleague.domain.Aggregates.UpdateTeam;
-using dreamleague.domain.Entities.Teams;
+using dreamleague.common.Entities.Teams;
 using dreamleague.domain.Infrastructure;
 
 namespace dreamleague.infrastructure.Repositories.Teams

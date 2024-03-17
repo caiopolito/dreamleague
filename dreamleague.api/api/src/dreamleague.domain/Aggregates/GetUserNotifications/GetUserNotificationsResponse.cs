@@ -1,4 +1,4 @@
-﻿using dreamleague.domain.Entities.Notifications;
+﻿using dreamleague.common.Entities.Notifications;
 
 namespace dreamleague.domain.Aggregates.GetUserNotifications
 {

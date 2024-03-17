@@ -1,4 +1,4 @@
-﻿using dreamleague.domain.Enums.Ranks;
+﻿using dreamleague.common.Enums.Ranks;
 
 namespace dreamleague.domain.Aggregates.GetUsers
 {

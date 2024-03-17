@@ -1,7 +1,7 @@
 ﻿using Azure.Core;
 using Dapper;
-using dreamleague.domain.Entities.Chat;
-using dreamleague.domain.Entities.Servers;
+using dreamleague.common.Entities.Chat;
+using dreamleague.common.Entities.Servers;
 using dreamleague.domain.Infrastructure;
 using dreamleague.infrastructure.Repositories.Chats;
 

@@ -1,4 +1,4 @@
-﻿using dreamleague.domain.Entities.Teams;
+﻿using dreamleague.common.Entities.Teams;
 
 namespace dreamleague.domain.Aggregates.GetChampionshipTeams
 {

@@ -4,7 +4,7 @@ using dreamleague.domain.Aggregates.GetUserFriends;
 using dreamleague.domain.Aggregates.GetUserInfo;
 using dreamleague.domain.Aggregates.GetUserMatches;
 using dreamleague.domain.Aggregates.GetUsers;
-using dreamleague.domain.Enums.Ranks;
+using dreamleague.common.Enums.Ranks;
 using dreamleague.domain.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 

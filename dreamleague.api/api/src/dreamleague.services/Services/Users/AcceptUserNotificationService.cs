@@ -1,5 +1,5 @@
 ﻿using dreamleague.domain.Aggregates.AcceptUserNotification;
-using dreamleague.domain.Entities.Teams;
+using dreamleague.common.Entities.Teams;
 using dreamleague.domain.Infrastructure;
 using dreamleague.domain.Services.Users;
 using dreamleague.shared.Services;

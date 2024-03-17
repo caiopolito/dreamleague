@@ -4,8 +4,8 @@ using dreamleague.domain.Aggregates.DeleteChampionship;
 using dreamleague.domain.Aggregates.GetChampionshipById;
 using dreamleague.domain.Aggregates.GetChampionships;
 using dreamleague.domain.Aggregates.UpdateChampionship;
-using dreamleague.domain.Entities.Championships;
-using dreamleague.domain.Entities.Teams;
+using dreamleague.common.Entities.Championships;
+using dreamleague.common.Entities.Teams;
 
 namespace dreamleague.domain.Infrastructure
 {
