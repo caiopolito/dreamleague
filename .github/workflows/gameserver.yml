@@ -31,7 +31,7 @@ jobs:
     name: Build and push gameserver image
     runs-on: self-hosted
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
-    timeout-minutes: 30
+    timeout-minutes: 90
 
     permissions:
       contents: read
@@ -47,6 +47,9 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull CS2 base image
+        run: docker pull ghcr.io/${{ github.repository_owner }}/dreamleague-cs2-base:latest
 
       - name: Extract metadata (tags, labels)
         id: meta
