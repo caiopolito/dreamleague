@@ -5,7 +5,7 @@ name: Build Gameserver Image
 #
 # Triggers:
 #   - Push to master that changes anything under dreamleague.gameserver/
-#   - After the base image workflow completes (automatic chain)
+#   - After the base image workflow completes successfully (automatic chain)
 #   - Manually via workflow_dispatch
 
 on:
@@ -14,6 +14,12 @@ on:
       - master
     paths:
       - "dreamleague.gameserver/**"
+  workflow_run:
+    workflows: ["Build CS2 Base Image"]
+    types:
+      - completed
+    branches:
+      - master
   workflow_dispatch:
 
 env:
@@ -23,7 +29,8 @@ env:
 jobs:
   build-and-push:
     name: Build and push gameserver image
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     timeout-minutes: 30
 
     permissions:
@@ -31,14 +38,6 @@ jobs:
       packages: write
 
     steps:
-      - name: Free disk space
-        run: |
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
-                      /opt/hostedtoolcache/CodeQL /usr/local/share/boost \
-                      /usr/lib/jvm /usr/share/swift
-          sudo docker image prune -af
-          df -h
-
       - name: Checkout repository
         uses: actions/checkout@v4
 

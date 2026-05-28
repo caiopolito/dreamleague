@@ -19,7 +19,7 @@ env:
 jobs:
   build-and-push:
     name: Build and push CS2 base image
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     # Large image — give it plenty of time (steamcmd download can be slow)
     timeout-minutes: 360
 
@@ -63,13 +63,3 @@ jobs:
           cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:latest
           cache-to: type=inline
 
-      - name: Trigger plugin image rebuild
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'gameserver.yml',
-              ref: 'master'
-            })
