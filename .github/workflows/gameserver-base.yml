@@ -19,7 +19,7 @@ env:
 jobs:
   build-and-push:
     name: Build and push CS2 base image
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     # Large image — give it plenty of time (steamcmd download can be slow)
     timeout-minutes: 360
 
