@@ -80,7 +80,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/dockerapissl.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=Password1234!
-      - Authentication__SteamApiKey=STEAM_API_KEY_REDACTED
+      - Authentication__SteamApiKey=${STEAM_API_KEY}
     ports:
       - 5000:5000
       - 5001:5001
