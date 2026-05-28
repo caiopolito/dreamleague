@@ -1,0 +1,33 @@
+FROM cm2network/steamcmd:latest
+
+ENV STEAMAPPID=730 \
+    STEAMAPP="cs2"
+
+ENV STEAMAPPDIR="${HOMEDIR}/cs2server"
+ENV CSGOFOLDERDIR="${STEAMAPPDIR}/game/csgo"
+
+# Install system dependencies as root
+USER root
+RUN set -x \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends --no-install-suggests \
+        wget \
+        ca-certificates \
+        lib32z1 \
+        libicu-dev \
+        unzip \
+        procps \
+    && apt-get clean \
+    && find /var/lib/apt/lists/ -type f -delete
+
+# Download CS2 as the steam user (avoids steamcmd file permission errors)
+USER ${USER}
+RUN mkdir -p "${STEAMAPPDIR}" \
+    && until bash "${STEAMCMDDIR}/steamcmd.sh" \
+        +force_install_dir "${STEAMAPPDIR}" \
+        +login anonymous \
+        +app_update "${STEAMAPPID}" validate \
+        +quit; do \
+        echo "[steamcmd] Download interrupted (exit $?), retrying in 10s..."; \
+        sleep 10; \
+    done
