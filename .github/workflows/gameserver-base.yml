@@ -19,7 +19,7 @@ env:
 jobs:
   build-and-push:
     name: Build and push CS2 base image
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     # Large image — give it plenty of time (steamcmd download can be slow)
     timeout-minutes: 360
 
@@ -28,17 +28,6 @@ jobs:
       packages: write
 
     steps:
-      - name: Free disk space
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: false
-          android: true
-          dotnet: true
-          haskell: true
-          large-packages: true
-          docker-images: true
-          swap-storage: true
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
