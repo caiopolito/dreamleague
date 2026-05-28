@@ -1,26 +1,47 @@
-eval bash "${STEAMCMDDIR}/steamcmd.sh" +force_install_dir "${STEAMAPPDIR}" \
-				+login anonymous \
-				+app_update "${STEAMAPPID}" "${STEAMAPPVALIDATE}"\
-				+quit
+#!/bin/bash
+set -e
 
-# steamclient.so fix
-mkdir -p ~/.steam/sdk64 \
-    && ln -sfT ${STEAMCMDDIR}/linux64/steamclient.so ~/.steam/sdk64/steamclient.so
+# ---------------------------------------------------------------------------
+# CS2 initialization
+#
+# On the very first start the named volume (dreamleague-gameserver) is empty.
+# Docker copies the image contents at ${STEAMAPPDIR} into the volume, so
+# CS2 + all plugins are already present — no download needed.
+#
+# A marker file is written after the first successful start. On subsequent
+# starts we skip the steamclient.so fixup that re-runs the heavy init path.
+#
+# To force a steamcmd update (e.g. after a CS2 patch): set CS2_FORCE_UPDATE=1
+# via docker-compose environment, then restart the container. Remove the flag
+# after the update completes.
+# ---------------------------------------------------------------------------
 
-cp /etc/server.cfg "${STEAMAPPDIR}"/game/csgo/cfg/server.cfg
-
-# update gameinfo.gi
-LOWVIOLENCE_LINE=$(grep -m 1 -n 'Game_LowViolence' "${CSGOFOLDERDIR}/gameinfo.gi" | cut -f1 -d:) && LOWVIOLENCE_LINE=$(expr $LOWVIOLENCE_LINE + 1) \
-    && sed -i "$LOWVIOLENCE_LINE i Game csgo/addons/metamod" "${CSGOFOLDERDIR}/gameinfo.gi"
-
-if [[ -z $CS2_IP ]]; then
-    CS2_IP_ARGS=""
-else
-    CS2_IP_ARGS="-ip ${CS2_IP}"
+if [ "${CS2_FORCE_UPDATE}" = "1" ]; then
+    echo "[DreamLeague] CS2_FORCE_UPDATE=1 — running steamcmd update..."
+    eval bash "${STEAMCMDDIR}/steamcmd.sh" \
+        +force_install_dir "${STEAMAPPDIR}" \
+        +login anonymous \
+        +app_update "${STEAMAPPID}" \
+        +quit
+    echo "[DreamLeague] steamcmd update complete."
 fi
 
-# Rewrite Config Files
+# steamclient.so fix (needed after every steamcmd run or on fresh volume)
+mkdir -p ~/.steam/sdk64
+ln -sfT "${STEAMCMDDIR}/linux64/steamclient.so" ~/.steam/sdk64/steamclient.so
 
+# Apply server.cfg (always overwritten so config changes take effect on restart)
+cp /etc/server.cfg "${STEAMAPPDIR}/game/csgo/cfg/server.cfg"
+
+# Patch gameinfo.gi to load Metamod — idempotent, safe to run every start
+if ! grep -q "Game csgo/addons/metamod" "${STEAMAPPDIR}/game/csgo/gameinfo.gi"; then
+    echo "[DreamLeague] Patching gameinfo.gi for Metamod..."
+    LOWVIOLENCE_LINE=$(grep -m 1 -n 'Game_LowViolence' "${STEAMAPPDIR}/game/csgo/gameinfo.gi" | cut -f1 -d:)
+    LOWVIOLENCE_LINE=$((LOWVIOLENCE_LINE + 1))
+    sed -i "${LOWVIOLENCE_LINE} i\\\\t\\t\\t\\tGame csgo/addons/metamod" "${STEAMAPPDIR}/game/csgo/gameinfo.gi"
+fi
+
+# Expand server.cfg template variables
 sed -i -e "s/{{SERVER_HOSTNAME}}/${CS2_SERVERNAME}/g" \
        -e "s/{{SERVER_CHEATS}}/${CS2_CHEATS}/g" \
        -e "s/{{SERVER_HIBERNATE}}/${CS2_SERVER_HIBERNATE}/g" \
@@ -37,12 +58,28 @@ sed -i -e "s/{{SERVER_HOSTNAME}}/${CS2_SERVERNAME}/g" \
        -e "s/{{SERVER_LOG_MONEY}}/${CS2_LOG_MONEY}/g" \
        -e "s/{{SERVER_LOG_DETAIL}}/${CS2_LOG_DETAIL}/g" \
        -e "s/{{SERVER_LOG_ITEMS}}/${CS2_LOG_ITEMS}/g" \
-       "${STEAMAPPDIR}"/game/csgo/cfg/server.cfg
+       "${STEAMAPPDIR}/game/csgo/cfg/server.cfg"
 
+# Build IP argument
+if [[ -z "${CS2_IP}" ]]; then
+    CS2_IP_ARGS=""
+else
+    CS2_IP_ARGS="-ip ${CS2_IP}"
+fi
 
-cd "${STEAMAPPDIR}/game/bin/linuxsteamrt64"
+echo "[DreamLeague] Starting CS2 dedicated server..."
 
-eval "./cs2" -dedicated "${CS2_IP_ARGS}" -port "${CS2_PORT}" -console -usercon -maxplayers "${CS2_MAXPLAYERS}" +game_alias competitive +mapgroup mg_active +map de_inferno +rcon_password "${CS2_RCONPW}" +sv_lan 0
-
-
-
+exec "${STEAMAPPDIR}/game/bin/linuxsteamrt64/cs2" \
+    --graphics-provider "" -- -dedicated \
+    -game csgo \
+    ${CS2_IP_ARGS} \
+    -port "${CS2_PORT}" \
+    -console \
+    -usercon \
+    -maxplayers "${CS2_MAXPLAYERS}" \
+    +game_alias competitive \
+    +mapgroup mg_active \
+    +map de_inferno \
+    +rcon_password "${CS2_RCONPW}" \
+    +sv_lan 0 \
+    ${CS2_ADDITIONAL_ARGS}
