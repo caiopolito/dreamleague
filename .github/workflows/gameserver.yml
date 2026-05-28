@@ -62,6 +62,10 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+        with:
+          # Use the regular Docker daemon so the explicit base image pull above
+          # warms the cache that this build step actually reads from.
+          driver: docker
 
       - name: Build and push
         uses: docker/build-push-action@v5
@@ -75,5 +79,3 @@ jobs:
           build-args: |
             METAMODURL=${{ vars.METAMODURL || 'https://mms.alliedmods.net/mmsdrop/2.0/mmsource-2.0.0-git1390-linux.tar.gz' }}
             MATCHZYURL=${{ vars.MATCHZYURL || 'https://github.com/caiopolito/MatchZy/releases/download/0.8.15/MatchZy-0.8.15-with-cssharp-linux.zip' }}
-          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:latest
-          cache-to: type=inline
