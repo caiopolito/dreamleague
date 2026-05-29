@@ -85,7 +85,9 @@ RUN ln -sfT "${STEAMAPPDIR}/game/csgo/addons" /addons
 COPY entrypoint.sh "${HOMEDIR}/entrypoint.sh"
 COPY server.cfg "/etc/server.cfg"
 
-USER ${USER}
+# Run as root so the entrypoint can fix volume ownership before dropping
+# to the steam user. Docker does not reliably propagate image directory
+# ownership to named volume mount points across all versions.
 WORKDIR ${HOMEDIR}
 CMD ["bash", "entrypoint.sh"]
 

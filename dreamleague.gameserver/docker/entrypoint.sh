@@ -1,6 +1,15 @@
 #!/bin/bash
 set -e
 
+# ---------------------------------------------------------------------------
+# 0. Drop to steam user (runs once, as root, on every container start)
+#    Fixes volume ownership first so steamcmd can write into it.
+# ---------------------------------------------------------------------------
+if [ "$(id -u)" = "0" ]; then
+    chown steam:steam "${STEAMAPPDIR}"
+    exec runuser -u steam -- bash "$(readlink -f "$0")"
+fi
+
 METAMOD_MARKER="${STEAMAPPDIR}/.metamod_version"
 MATCHZY_MARKER="${STEAMAPPDIR}/.matchzy_version"
 MATCHZY_CONFIG="${STEAMAPPDIR}/game/csgo/cfg/MatchZy/config.cfg"
