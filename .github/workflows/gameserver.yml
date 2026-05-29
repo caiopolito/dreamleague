@@ -1,11 +1,10 @@
 name: Build Gameserver Image
 
-# Builds the plugin layer (Metamod + CounterStrikeSharp + MatchZy) on top of
-# the pre-built CS2 base image and pushes it to GHCR.
+# Builds the slim gameserver image (Ubuntu 20.04 + SteamCMD + entrypoint).
+# CS2 and plugins are downloaded at container startup, not baked into the image.
 #
 # Triggers:
 #   - Push to master that changes anything under dreamleague.gameserver/
-#   - After the base image workflow completes successfully (automatic chain)
 #   - Manually via workflow_dispatch
 
 on:
@@ -14,12 +13,6 @@ on:
       - master
     paths:
       - "dreamleague.gameserver/**"
-  workflow_run:
-    workflows: ["Build CS2 Base Image"]
-    types:
-      - completed
-    branches:
-      - master
   workflow_dispatch:
 
 env:
@@ -29,9 +22,8 @@ env:
 jobs:
   build-and-push:
     name: Build and push gameserver image
-    runs-on: self-hosted
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
-    timeout-minutes: 90
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     permissions:
       contents: read
@@ -48,9 +40,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull CS2 base image
-        run: docker pull ghcr.io/${{ github.repository_owner }}/dreamleague-cs2-base:latest
-
       - name: Extract metadata (tags, labels)
         id: meta
         uses: docker/metadata-action@v5
@@ -62,10 +51,6 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-        with:
-          # Use the regular Docker daemon so the explicit base image pull above
-          # warms the cache that this build step actually reads from.
-          driver: docker
 
       - name: Build and push
         uses: docker/build-push-action@v5
@@ -75,7 +60,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          # Pass default ARGs — override in repository secrets for production values
-          build-args: |
-            METAMODURL=${{ vars.METAMODURL || 'https://mms.alliedmods.net/mmsdrop/2.0/mmsource-2.0.0-git1390-linux.tar.gz' }}
-            MATCHZYURL=${{ vars.MATCHZYURL || 'https://github.com/caiopolito/MatchZy/releases/download/0.8.15/MatchZy-0.8.15-with-cssharp-linux.zip' }}
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:latest
+          cache-to: type=inline

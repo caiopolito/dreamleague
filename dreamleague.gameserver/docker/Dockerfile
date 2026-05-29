@@ -1,24 +1,38 @@
-FROM ghcr.io/caiopolito/dreamleague-cs2-base:latest
+FROM ubuntu:20.04
 
-ARG METAMODURL=https://mms.alliedmods.net/mmsdrop/2.0/mmsource-2.0.0-git1374-linux.tar.gz
-ARG MATCHZYURL=https://github.com/caiopolito/MatchZy/releases/download/0.8.15/MatchZy-0.8.15-with-cssharp-linux.zip
-ARG DREAMLEAGUE_MATCH_DATABASE=mongodb://root:Password1234!@dreamleague-database-matches-1:27017
-ARG DREAMLEAGUE_MATCH_DATABASE_NAME=dreamleague
-ARG DREAMLEAGUE_MATCH_DATABASE_COLLECTION=matches
+ENV DEBIAN_FRONTEND=noninteractive
 
-# CS2 server runtime configuration — all overridable via docker-compose environment:
+# Runtime identity — matches what the rest of the toolchain expects
+ENV USER=steam \
+    HOMEDIR=/home/steam \
+    STEAMCMDDIR=/home/steam/steamcmd
+
+ENV STEAMAPPID=730 \
+    STEAMAPP="cs2" \
+    STEAMAPPDIR=/home/steam/cs2server \
+    CSGOFOLDERDIR=/home/steam/cs2server/game/csgo
+
+# Plugin versions — override these env vars in docker-compose to update
+# plugins without rebuilding the image
+ENV METAMODURL="https://mms.alliedmods.net/mmsdrop/2.0/mmsource-2.0.0-git1390-linux.tar.gz" \
+    MATCHZYURL="https://github.com/caiopolito/MatchZy/releases/download/0.8.15/MatchZy-0.8.15-with-cssharp-linux.zip"
+
+# MongoDB connection — override in docker-compose for non-default setups
+ENV DREAMLEAGUE_MATCH_DATABASE="mongodb://root:Password1234!@dreamleague-database-matches-1:27017" \
+    DREAMLEAGUE_MATCH_DATABASE_NAME="dreamleague" \
+    DREAMLEAGUE_MATCH_DATABASE_COLLECTION="matches"
+
+# CS2 server runtime configuration — all overridable via docker-compose environment
 ENV CS2_SERVERNAME="[DREAMLEAGUE] #1 Private Matchmaking" \
     CS2_CHEATS=0 \
     CS2_IP=0.0.0.0 \
     CS2_SERVER_HIBERNATE=0 \
     CS2_PORT=27015 \
-    CS2_RCON_PORT="" \
     CS2_MAXPLAYERS=10 \
     CS2_RCONPW="Password1234!" \
     CS2_PW="changeme" \
     CS2_MAPGROUP="mg_active" \
     CS2_STARTMAP="de_inferno" \
-    CS2_GAMEALIAS="" \
     CS2_GAMETYPE=0 \
     CS2_GAMEMODE=1 \
     CS2_LAN=0 \
@@ -36,41 +50,42 @@ ENV CS2_SERVERNAME="[DREAMLEAGUE] #1 Private Matchmaking" \
     CS2_LOG_DETAIL=0 \
     CS2_LOG_ITEMS=0 \
     CS2_ADDITIONAL_ARGS="" \
-    # Set to 1 to force a steamcmd update on next container start
     CS2_FORCE_UPDATE=0
 
-# Install Metamod, CounterStrikeSharp, and MatchZy into the CS2 installation
-# that was baked into the base image.
-USER root
-RUN set -x \
-    && cd "${STEAMAPPDIR}" \
-    && curl -fsSL "${METAMODURL}" | tar xvzf - -C ./game/csgo/ \
-    && cd ./game/csgo \
-    && wget -O matchzy.zip "${MATCHZYURL}" && unzip -o matchzy.zip \
-    && rm -f matchzy.zip \
-    && grep -rl 'MatchZy' ./cfg/MatchZy/config.cfg | xargs sed -i 's/MatchZy/DreamLeague/g' \
-    && chown -R "${USER}:${USER}" "${STEAMAPPDIR}"
+# i386 arch required for the 32-bit steamcmd bootstrap binary
+RUN dpkg --add-architecture i386 \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        lib32gcc-s1 \
+        ca-certificates \
+        wget \
+        curl \
+        libicu-dev \
+        unzip \
+        procps \
+        lib32z1 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Inject MongoDB connection details into MatchZy config at build time
-RUN sed -i -e "s|{{DREAMLEAGUE_MATCH_DATABASE}}|${DREAMLEAGUE_MATCH_DATABASE}|g" \
-        -e "s|{{DREAMLEAGUE_MATCH_DATABASE_NAME}}|${DREAMLEAGUE_MATCH_DATABASE_NAME}|g" \
-        -e "s|{{DREAMLEAGUE_MATCH_DATABASE_COLLECTION}}|${DREAMLEAGUE_MATCH_DATABASE_COLLECTION}|g" \
-        "${STEAMAPPDIR}/game/csgo/cfg/MatchZy/config.cfg"
+RUN useradd -m -u 1000 -s /bin/bash "${USER}"
+
+# Install SteamCMD
+RUN mkdir -p "${STEAMCMDDIR}" \
+    && wget -qO- 'https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz' \
+       | tar xvzf - -C "${STEAMCMDDIR}" \
+    && chown -R "${USER}:${USER}" "${HOMEDIR}"
 
 # Metamod resolves its plugin folder as "/addons/metamod" (empty gamedir quirk).
-# Create a symlink at the root so it finds the right path at runtime.
+# The symlink target lives in the named volume — it doesn't need to exist at build time.
 RUN ln -sfT "${STEAMAPPDIR}/game/csgo/addons" /addons
 
 COPY entrypoint.sh "${HOMEDIR}/entrypoint.sh"
 COPY server.cfg "/etc/server.cfg"
 
 USER ${USER}
-
 WORKDIR ${HOMEDIR}
+CMD ["bash", "entrypoint.sh"]
 
-CMD [ "bash", "entrypoint.sh" ]
-
-# CS2 game port (TCP+UDP) and SourceTV
 EXPOSE 27015/tcp \
     27015/udp \
     27020/udp

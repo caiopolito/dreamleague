@@ -18,6 +18,17 @@ services:
   gameserver:
     image: ghcr.io/caiopolito/dreamleague-gameserver:latest
     restart: unless-stopped
+    # On first start CS2 is downloaded via SteamCMD (~35 GB) and plugins are
+    # installed into the named volume. Subsequent starts reuse the volume and
+    # skip the download. To update plugins, change METAMODURL / MATCHZYURL and
+    # restart. To force a CS2 update, set CS2_FORCE_UPDATE=1 and restart.
+    environment:
+      DREAMLEAGUE_MATCH_DATABASE: mongodb://root:Password1234!@dreamleague-database-matches-1:27017
+      DREAMLEAGUE_MATCH_DATABASE_NAME: dreamleague
+      DREAMLEAGUE_MATCH_DATABASE_COLLECTION: matches
+      # METAMODURL: https://mms.alliedmods.net/mmsdrop/2.0/mmsource-2.0.0-git1390-linux.tar.gz
+      # MATCHZYURL: https://github.com/caiopolito/MatchZy/releases/download/0.8.15/MatchZy-0.8.15-with-cssharp-linux.zip
+      # CS2_FORCE_UPDATE: 0
     ports:
       - 27015:27015/tcp
       - 27015:27015/udp
