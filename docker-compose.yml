@@ -26,8 +26,9 @@ services:
       DREAMLEAGUE_MATCH_DATABASE: mongodb://root:Password1234!@dreamleague-database-matches-1:27017
       DREAMLEAGUE_MATCH_DATABASE_NAME: dreamleague
       DREAMLEAGUE_MATCH_DATABASE_COLLECTION: matches
-      # METAMODURL: https://mms.alliedmods.net/mmsdrop/2.0/mmsource-2.0.0-git1390-linux.tar.gz
-      # MATCHZYURL: https://github.com/caiopolito/MatchZy/releases/download/0.8.15/MatchZy-0.8.15-with-cssharp-linux.zip
+      # CS2_INSTALL_PLUGINS: 0  # uncomment to start bare CS2 without any plugins
+      METAMODURL: https://github.com/alliedmodders/metamod-source/releases/download/2.0.0.1401/mmsource-2.0.0-git1401-linux.tar.gz
+      MATCHZYURL: https://github.com/caiopolito/MatchZy/releases/download/0.8.15/MatchZy-0.8.15-with-cssharp-linux.zip
       # CS2_FORCE_UPDATE: 0
     ports:
       - 27015:27015/tcp

@@ -14,7 +14,7 @@ ENV STEAMAPPID=730 \
 
 # Plugin versions — override these env vars in docker-compose to update
 # plugins without rebuilding the image
-ENV METAMODURL="https://mms.alliedmods.net/mmsdrop/2.0/mmsource-2.0.0-git1390-linux.tar.gz" \
+ENV METAMODURL="https://github.com/alliedmodders/metamod-source/releases/download/2.0.0.1401/mmsource-2.0.0-git1401-linux.tar.gz" \
     MATCHZYURL="https://github.com/caiopolito/MatchZy/releases/download/0.8.15/MatchZy-0.8.15-with-cssharp-linux.zip"
 
 # MongoDB connection — override in docker-compose for non-default setups
@@ -50,7 +50,8 @@ ENV CS2_SERVERNAME="[DREAMLEAGUE] #1 Private Matchmaking" \
     CS2_LOG_DETAIL=0 \
     CS2_LOG_ITEMS=0 \
     CS2_ADDITIONAL_ARGS="" \
-    CS2_FORCE_UPDATE=0
+    CS2_FORCE_UPDATE=0 \
+    CS2_INSTALL_PLUGINS=1
 
 # i386 arch required for the 32-bit steamcmd bootstrap binary
 RUN dpkg --add-architecture i386 \
