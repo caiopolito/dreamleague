@@ -20,6 +20,8 @@ if [ ! -f "${STEAMAPPDIR}/game/bin/linuxsteamrt64/cs2" ] || [ "${CS2_FORCE_UPDAT
         sleep 10
     done
     echo "[DreamLeague] CS2 download complete."
+    echo "[DreamLeague] Game directory structure:"
+    ls "${STEAMAPPDIR}/game/" 2>/dev/null || echo "  (game/ not found — listing STEAMAPPDIR instead:)" && ls "${STEAMAPPDIR}/" 2>/dev/null
 fi
 
 # ---------------------------------------------------------------------------

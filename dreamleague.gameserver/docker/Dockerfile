@@ -69,8 +69,11 @@ RUN dpkg --add-architecture i386 \
 
 RUN useradd -m -u 1000 -s /bin/bash "${USER}"
 
-# Install SteamCMD
-RUN mkdir -p "${STEAMCMDDIR}" \
+# Install SteamCMD and pre-create the CS2 install directory so Docker
+# initialises the named volume with steam ownership on first mount.
+# Without this, Docker creates the mount point as root and the steam
+# user cannot write the CS2 download into it.
+RUN mkdir -p "${STEAMCMDDIR}" "${STEAMAPPDIR}" \
     && wget -qO- 'https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz' \
        | tar xvzf - -C "${STEAMCMDDIR}" \
     && chown -R "${USER}:${USER}" "${HOMEDIR}"
