@@ -68,7 +68,7 @@ This starts the CS2 game server, MSSQL, and MongoDB. On first run, CS2 is downlo
 # API (hot reload)
 cd dreamleague.api/api/src/dreamleague.api
 dotnet run
-# Swagger UI → https://localhost:5001/api-docs
+# Swagger UI → http://localhost:5000/api-docs
 
 # Frontend (hot reload)
 cd dreamleague.app/app

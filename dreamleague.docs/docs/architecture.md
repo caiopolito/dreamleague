@@ -17,7 +17,7 @@ Browser
 dreamleague.app  (React SPA, port 3000)
   │  REST + SignalR
   ▼
-dreamleague.api  (ASP.NET Core 6, port 5001)
+dreamleague.api  (ASP.NET Core 6, port 5000)
   ├── MSSQL  ──►  dreamleague.main.db   (player, team, match records)
   ├── MongoDB ──► dreamleague.matches.db (match JSON for CS2 plugin)
   └── RCON   ──► dreamleague.gameserver  (CS2 server, port 27015)

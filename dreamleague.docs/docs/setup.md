@@ -57,7 +57,7 @@ cd dreamleague.api/api/src/dreamleague.api
 dotnet run
 ```
 
-Swagger UI is available at `https://localhost:5001/api-docs`.
+Swagger UI is available at `http://localhost:5000/api-docs`.
 
 **Frontend:**
 ```bash

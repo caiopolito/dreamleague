@@ -36,7 +36,7 @@ Located at `dreamleague.app/app/.env`.
 
 | Variable | Description |
 |---|---|
-| `REACT_APP_URL_API` | API base URL (e.g. `https://localhost:5001/`) |
+| `REACT_APP_URL_API` | API base URL (e.g. `http://localhost:5000/`) |
 | `REACT_APP_URL_HUB` | SignalR hub base URL (same as API) |
 | `REACT_APP_URL` | Frontend URL (e.g. `http://localhost:3000/`) |
 
