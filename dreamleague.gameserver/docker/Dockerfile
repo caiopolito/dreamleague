@@ -15,7 +15,7 @@ ENV STEAMAPPID=730 \
 # Plugin versions — override these env vars in docker-compose to update
 # plugins without rebuilding the image
 ENV METAMODURL="https://github.com/alliedmodders/metamod-source/releases/download/2.0.0.1401/mmsource-2.0.0-git1401-linux.tar.gz" \
-    MATCHZYURL="https://github.com/caiopolito/MatchZy/releases/download/0.8.15/MatchZy-0.8.15-with-cssharp-linux.zip"
+    MATCHZYURL="https://github.com/caiopolito/MatchZy/releases/download/0.8.16/MatchZy-0.8.16-with-cssharp-linux.zip"
 
 # MongoDB connection — override in docker-compose for non-default setups
 ENV DREAMLEAGUE_MATCH_DATABASE="mongodb://root:changeme@dreamleague-database-matches-1:27017" \
