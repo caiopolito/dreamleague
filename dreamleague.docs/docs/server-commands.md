@@ -20,8 +20,8 @@ You can send any standard CS2 server command via RCON. Use the RCON password con
 
 ```bash
 # Example using rcon-cli
-rcon -a 127.0.0.1:27015 -p Password1234! "status"
-rcon -a 127.0.0.1:27015 -p Password1234! "mp_restartgame 1"
+rcon -a 127.0.0.1:27015 -p <your_rcon_password> "status"
+rcon -a 127.0.0.1:27015 -p <your_rcon_password> "mp_restartgame 1"
 ```
 
 ## Managing servers

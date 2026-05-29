@@ -48,7 +48,7 @@ The CS2 server is configured entirely via environment variables passed through D
 |---|---|---|
 | `CS2_SERVERNAME` | `[DREAMLEAGUE] #1 Private Matchmaking` | Server name shown in the browser |
 | `CS2_PORT` | `27015` | Game port (TCP + UDP) |
-| `CS2_RCONPW` | `Password1234!` | RCON password — **change this in production** |
+| `CS2_RCONPW` | `changeme` | RCON password — **change this in production** |
 | `CS2_PW` | `changeme` | Server join password |
 | `CS2_MAXPLAYERS` | `10` | Maximum player slots |
 | `CS2_FORCE_UPDATE` | `0` | Set to `1` to trigger a SteamCMD update on next start |

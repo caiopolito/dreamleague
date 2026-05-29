@@ -18,7 +18,7 @@ ENV METAMODURL="https://github.com/alliedmodders/metamod-source/releases/downloa
     MATCHZYURL="https://github.com/caiopolito/MatchZy/releases/download/0.8.15/MatchZy-0.8.15-with-cssharp-linux.zip"
 
 # MongoDB connection — override in docker-compose for non-default setups
-ENV DREAMLEAGUE_MATCH_DATABASE="mongodb://root:Password1234!@dreamleague-database-matches-1:27017" \
+ENV DREAMLEAGUE_MATCH_DATABASE="mongodb://root:changeme@dreamleague-database-matches-1:27017" \
     DREAMLEAGUE_MATCH_DATABASE_NAME="dreamleague" \
     DREAMLEAGUE_MATCH_DATABASE_COLLECTION="matches"
 
@@ -29,7 +29,7 @@ ENV CS2_SERVERNAME="[DREAMLEAGUE] #1 Private Matchmaking" \
     CS2_SERVER_HIBERNATE=0 \
     CS2_PORT=27015 \
     CS2_MAXPLAYERS=10 \
-    CS2_RCONPW="Password1234!" \
+    CS2_RCONPW="changeme" \
     CS2_PW="changeme" \
     CS2_MAPGROUP="mg_active" \
     CS2_STARTMAP="de_inferno" \

@@ -209,7 +209,7 @@ END
 IF NOT EXISTS (SELECT * FROM dbo.servers WHERE ip_string = '172.20.128.1')
 BEGIN
 INSERT INTO dbo.servers (id, display_name, ip_string, port, rcon_password, in_use, password)
-VALUES (NEWID(), 'test', '172.20.128.1', 27015, 'Password1234!', 0, 'changeme')
+VALUES (NEWID(), 'test', '172.20.128.1', 27015, 'changeme', 0, 'changeme')
 END
 
 COMMIT TRANSACTION T1
