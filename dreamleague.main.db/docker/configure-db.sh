@@ -7,7 +7,7 @@
 
 for i in {1..50};
 do
-    /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $MSSQL_SA_PASSWORD  -d master -i setup.sql
+    /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P $MSSQL_SA_PASSWORD -d master -i setup.sql -C
     if [ $? -eq 0 ]
     then
         echo "setup.sql completed"

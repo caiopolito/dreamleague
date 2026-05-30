@@ -51,7 +51,7 @@ namespace dreamleague.hubs.Hubs
 
                 if (playersInQueue.Count == minPlayers)
                 {
-                    var keys = playersInQueue.Keys;
+                    var keys = playersInQueue.Keys.ToList();
 
                     var match = await createMatchService.Execute(new CreateMatchRequest { Players = playersInQueue });
 

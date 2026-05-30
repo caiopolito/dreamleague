@@ -486,3 +486,6 @@ dreamleague.docs/build/
 # Claude Code
 CLAUDE.md
 .claude/
+
+# Windows user profile directory (contains SSL certs/keys)
+%USERPROFILE%/

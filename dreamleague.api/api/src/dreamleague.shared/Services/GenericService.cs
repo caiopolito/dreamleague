@@ -27,7 +27,7 @@ namespace dreamleague.shared.Services
             }
             catch (Exception exception)
             {
-                throw new Exception(Resources.InternalServerError, exception);
+                throw new Exception($"{Resources.InternalServerError} {exception.Message}", exception);
             }
         }
 

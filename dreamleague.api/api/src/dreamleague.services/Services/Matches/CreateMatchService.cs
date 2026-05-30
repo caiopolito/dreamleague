@@ -31,6 +31,9 @@ namespace dreamleague.services.Services.Matches
         {
             var server = await unitOfWork.ServerRepository.GetFirstAvailableServerAsync();
 
+            if (server is null)
+                throw new InvalidOperationException("No available server found.");
+
             var availability = await unitOfWork.RconRepository.CheckAvailabilityAsync(server);
 
             if (availability.available != 1)
