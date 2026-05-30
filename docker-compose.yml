@@ -26,6 +26,7 @@ services:
       DREAMLEAGUE_MATCH_DATABASE: mongodb://root:${MONGO_ROOT_PASSWORD}@dreamleague-database-matches-1:27017
       DREAMLEAGUE_MATCH_DATABASE_NAME: dreamleague
       DREAMLEAGUE_MATCH_DATABASE_COLLECTION: matches
+      DREAMLEAGUE_API_URL: http://dreamleague-api-1:5000
       CS2_RCONPW: ${CS2_RCONPW}
       CS2_PW: ${CS2_PW}
       # CS2_INSTALL_PLUGINS: 0  # uncomment to start bare CS2 without any plugins

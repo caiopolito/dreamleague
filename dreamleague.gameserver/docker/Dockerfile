@@ -20,7 +20,8 @@ ENV METAMODURL="https://github.com/alliedmodders/metamod-source/releases/downloa
 # MongoDB connection — override in docker-compose for non-default setups
 ENV DREAMLEAGUE_MATCH_DATABASE="mongodb://root:changeme@dreamleague-database-matches-1:27017" \
     DREAMLEAGUE_MATCH_DATABASE_NAME="dreamleague" \
-    DREAMLEAGUE_MATCH_DATABASE_COLLECTION="matches"
+    DREAMLEAGUE_MATCH_DATABASE_COLLECTION="matches" \
+    DREAMLEAGUE_API_URL="http://dreamleague-api-1:5000"
 
 # CS2 server runtime configuration — all overridable via docker-compose environment
 ENV CS2_SERVERNAME="[DREAMLEAGUE] #1 Private Matchmaking" \

@@ -34,11 +34,8 @@ namespace dreamleague.api.Configurations
 
             // Matches
             .AddScoped<ICreateMatchService, CreateMatchService>()
+            .AddScoped<IMatchEventService, MatchEventService>()
             .AddScoped<IFinishMatchService, FinishMatchService>()
-            .AddScoped<IFinishMatchMapService, FinishMatchMapService>()
-            .AddScoped<IUpdateMatchMapPlayerService, UpdateMatchMapPlayerService>()
-            .AddScoped<IUpdateMatchMapService, UpdateMatchMapService>()
-            .AddScoped<IStartMatchMapService, StartMatchMapService>()
             .AddScoped<IGetMatchDetailsService, GetMatchDetailsService>()
 
             // Teams
